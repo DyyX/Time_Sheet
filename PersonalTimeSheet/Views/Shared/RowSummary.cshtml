@@ -1,0 +1,29 @@
+﻿@model PersonalTimeSheet.DBUtils.Row
+           
+<tr class="item">
+    <td>
+        @Model.Title
+    </td>
+    <td>
+        @Model.Description
+    </td>
+    <td>
+        @Model.SpentTime.ToString()
+    </td>
+    <td style="border: none; width: 15%;">
+        <div style="display: block">
+            
+            @Html.ActionLink("Edit", "EditRow", new {rowId=Model.Id}, new{@class = "actionButtons"})
+            
+
+            @using (Html.BeginForm("RemoveRow", "Row"))
+            {
+                @Html.Hidden("rowId", Model.Id)
+                @Html.Hidden("returnUrl", "/?page=" + Session["curPage"].ToString())
+                <input class="actionButtons" type="submit" value="Remove" />
+            }
+        </div>
+    </td>
+</tr>
+
+

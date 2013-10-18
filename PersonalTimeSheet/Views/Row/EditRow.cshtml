@@ -1,0 +1,25 @@
+﻿@model PersonalTimeSheet.DBUtils.Row
+
+@{
+    ViewBag.Title = "EditRow";
+}
+
+    @using (Html.BeginForm())
+    {
+        @Html.ValidationSummary(true);
+        <h3>Update Task</h3>
+        <div style="display: none">@Html.EditorFor(x=>x.Id)</div>
+        <div>Title : @Html.EditorFor(x => x.Title)</div>
+        <br/>
+        <div>Description : @Html.EditorFor(x => x.Description)</div>
+        <br/>
+        <div>Spent Time : @Html.EditorFor(x => x.SpentTime)</div>
+
+        <p align="left">
+            <input class="actionButtons" type="submit" value="Upadate" />
+        </p>
+    }
+    
+    @Html.ActionLink("Back", "List", new {page=Session["curPage"]})
+
+

@@ -1,0 +1,20 @@
+﻿@model PersonalTimeSheet.DBUtils.Row
+
+@{
+    Layout = null;
+}
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <h3>Create New Task</h3>
+    <div>Title : @Html.EditorFor(x => x.Title)</div>
+    <br/>
+    <div>Description : @Html.EditorFor(x => x.Description)</div>
+    <br/>
+    <div>Spent Time : @Html.EditorFor(x => x.SpentTime)</div>
+
+    <p align="center">
+        <input class="actionButtons" type="submit" value="Save" />
+    </p>
+}

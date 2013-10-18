@@ -1,0 +1,28 @@
+﻿@using PersonalTimeSheet.HtmlHelper
+@model PersonalTimeSheet.Models.RowListViewModel
+
+@{
+    ViewBag.Title = "List";
+}
+
+<table>
+    <tr id="tableHeader">
+       <td>
+            Title
+        </td>
+        <td>
+            Description
+        </td>
+       <td>
+            Time Spent
+        </td>
+    </tr>
+    @foreach (var p in Model.Rows)
+    {
+        Html.RenderPartial("RowSummary", p); 
+    }
+</table>
+
+<div class="pager">
+        @Html.PageLinks(Model.Info, x => Url.Action("List", new {page = x}))
+</div>
