@@ -19,7 +19,13 @@
             <input class="actionButtons" type="submit" value="Upadate" />
         </p>
     }
-    
-    @Html.ActionLink("Back", "List", new {page=Session["curPage"]})
+
+     @using (Html.BeginForm("List", "Row"))
+            {
+                @Html.Hidden("page", Session["curPage"])
+               <input class="actionButtons" type="submit" value="Back" />
+            }
+   
+
 
 

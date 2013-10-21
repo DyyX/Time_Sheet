@@ -11,10 +11,13 @@
         @Model.SpentTime.ToString()
     </td>
     <td style="border: none; width: 15%;">
-        <div style="display: block">
+        <div style="display: inline;">
             
-            @Html.ActionLink("Edit", "EditRow", new {rowId=Model.Id}, new{@class = "actionButtons"})
-            
+            @using (Html.BeginForm("EditRow", "Row"))
+            {
+                @Html.Hidden("rowId", Model.Id)
+               <input class="actionButtons" type="submit" value="Edit" />
+            }
 
             @using (Html.BeginForm("RemoveRow", "Row"))
             {

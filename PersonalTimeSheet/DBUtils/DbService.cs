@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Configuration;
+using System.Data.SqlClient;
 
 namespace PersonalTimeSheet.DBUtils
 {
@@ -17,11 +18,40 @@ namespace PersonalTimeSheet.DBUtils
                 _rows.Clear();
             }
 
-            using (var context = new PTSDataBaseEntities())
+            using (
+                var connection =
+                    new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString))
             {
-                foreach (var row in context.Table)
+                using (var command = new SqlCommand("SELECT * FROM dbo.Tasks", connection))
                 {
-                    _rows.Add(DbTableToLocalTable(row));
+                    try
+                    {
+                        connection.Open();
+
+                        var reader = command.ExecuteReader();
+
+                        while (reader.Read())
+                        {
+                           _rows.Add(new Row()
+                               {
+                                   Id = (int)reader[0],
+                                   Title = (string)reader[1],
+                                   Description = (string)reader[2],
+                                   SpentTime = TimeSpan.FromSeconds((Int64)reader[3])
+                               });
+                        }
+
+                        reader.Close();
+                    }
+                    catch (Exception e)
+                    {
+
+                        throw;
+                    }
+                    finally
+                    {
+                        connection.Close();
+                    }
                 }
             }
         }
@@ -29,19 +59,6 @@ namespace PersonalTimeSheet.DBUtils
         #endregion
 
         #region Publics
-
-        public Row DbTableToLocalTable(Table table)
-        {
-            return new Row()
-                {
-                    Description = table.DbDescription,
-                    Id = table.DbId,
-                    SpentTime = TimeSpan.FromSeconds(table.DbSpentTime ?? 0),
-                    Title = table.DbTitle
-                };
-        }
-
-
 
         public List<Row> Rows
         {
@@ -60,50 +77,92 @@ namespace PersonalTimeSheet.DBUtils
 
         public void AddTableRow(Row row)
         {
-            using (var context = new PTSDataBaseEntities())
+            using (
+                var connection =
+                    new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString))
             {
-                context.Table.Add(new Table()
+                using (var command = new SqlCommand("INSERT INTO dbo.Tasks (DbTitle, DbDescription, DbSpentTime) VALUES (@Title, @Description, @SpentTime)", connection))
+                {
+                    try
                     {
-                        DbDescription = row.Description,
-                        DbSpentTime = (long) row.SpentTime.TotalSeconds,
-                        DbTitle = row.Title
-                    });
+                        command.Parameters.AddWithValue("@Title", row.Title);
+                        command.Parameters.AddWithValue("@Description", row.Description);
+                        command.Parameters.AddWithValue("@SpentTime", row.SpentTime.TotalSeconds);
 
-                context.SaveChanges();
-               _rows.Add(row);
+                        connection.Open();
+
+                        command.ExecuteNonQuery();
+                    }
+                    catch (Exception e)
+                    {
+
+                        throw;
+                    }
+                    finally
+                    {
+                        connection.Close();
+                    }
+                }
             }
         }
 
         public void UpdateTableRow(Row row)
         {
-            using (var context = new PTSDataBaseEntities())
+            using (
+                var connection =
+                    new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString))
             {
-                var dbRow = context.Table.SingleOrDefault(r => r.DbId == row.Id);
-                if (null != dbRow)
+                using (var command = new SqlCommand("UPDATE dbo.Tasks SET DbTitle = @Title, DbDescription = @Description, DbSpentTime = @SpentTime WHERE DbId = @Id", connection))
                 {
-                    dbRow.DbDescription = row.Description;
-                    dbRow.DbSpentTime = (long) row.SpentTime.TotalSeconds;
-                    dbRow.DbTitle = row.Title;
+                    try
+                    {
+                        command.Parameters.AddWithValue("@Id", row.Id);
+                        command.Parameters.AddWithValue("@Title", row.Title);
+                        command.Parameters.AddWithValue("@Description", row.Description);
+                        command.Parameters.AddWithValue("@SpentTime", row.SpentTime.TotalSeconds);
 
-                    context.SaveChanges();
-                    FillRowsList();
+                        connection.Open();
+
+                        var reader = command.ExecuteNonQuery();
+                    }
+                    catch (Exception e)
+                    {
+
+                        throw;
+                    }
+                    finally
+                    {
+                        connection.Close();
+                    }
                 }
             }
         }
 
         public void RemoveTableRow(int rowId)
         {
-            using (var context = new PTSDataBaseEntities())
+            using (
+                var connection =
+                    new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString))
             {
-                var dbRow = context.Table.SingleOrDefault(r => r.DbId == rowId);
-                if (null != dbRow)
+                using (var command = new SqlCommand("DELETE FROM dbo.Tasks WHERE DbId = @Id", connection))
                 {
-                    context.Table.Remove(dbRow);
+                    try
+                    {
+                        command.Parameters.AddWithValue("@Id", rowId);
+                        connection.Open();
 
-                    context.SaveChanges();
-                    _rows.Remove(_rows.SingleOrDefault(r => r.Id == rowId));
+                        command.ExecuteNonQuery();
+                    }
+                    catch (Exception e)
+                    {
+
+                        throw;
+                    }
+                    finally
+                    {
+                        connection.Close();
+                    }
                 }
-
             }
         }
 
