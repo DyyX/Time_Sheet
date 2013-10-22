@@ -39,10 +39,10 @@ namespace PersonalTimeSheet.Controllers
             var row = _dbService.Rows.SingleOrDefault(r => r.Id == rowId);
             if (null != row)
             {
-                return View("EditRow", row);
+                return View("EditRow2", row);
             }
 
-            return View("EditRow", new Row());
+            return View("EditRow2", new Row());
         }
 
         [HttpPost]
@@ -70,15 +70,15 @@ namespace PersonalTimeSheet.Controllers
         }
 
         [HttpPost]
-        public ViewResult NewRow(Row row)
+        public RedirectToRouteResult NewRow(Row row)
         {
             if (ModelState.IsValid)
             {
                 _dbService.AddTableRow(row);
-                return View();                
+                return RedirectToAction("List", new { page = Convert.ToInt16(Session["curPage"]) });
             }
 
-            return View("NewRow", row);
+            return RedirectToAction("NewRow");
         }
 
     }

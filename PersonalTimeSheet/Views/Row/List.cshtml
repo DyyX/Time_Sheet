@@ -24,5 +24,12 @@
 </table>
 
 <div class="pager">
-        @Html.PageLinks(Model.Info, x => Url.Action("List", new {page = x}))
+    @Html.PageLinks(Model.Info, x => Url.Action("List", new {page = x}))
+</div>
+
+<div style="display: inline-block;">
+    @using (Html.BeginForm("NewRow", "Row"))
+    {          
+        <input class="actionButtons" type="submit" value="Add New Task" />
+    }
 </div>

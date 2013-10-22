@@ -6,6 +6,10 @@
     <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
     <script src="@Url.Content("~/Scripts/jquery-1.7.1.min.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/Scripts/modernizr-2.5.3.js")" type="text/javascript"></script>
+    <link href="@Url.Content("~/Scripts/Facebox/facebox.css")" media="screen" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/Facebox/facebox.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/Facebox/FaceboxScript.js")" type="text/javascript"></script>
+
 </head>
 
     <body>
@@ -13,7 +17,6 @@
             <div class="title">Personal Time Sheet</div>
         </div>
         <div id="menu">
-            @{Html.RenderAction("NewRow", "Row");}
         </div>
         <div id="content">
             @RenderBody()

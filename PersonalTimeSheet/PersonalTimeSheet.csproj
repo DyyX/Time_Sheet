@@ -170,6 +170,11 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <None Include="Scripts\jquery-1.7.1.intellisense.js" />
+    <Content Include="Scripts\Facebox\closelabel.png" />
+    <Content Include="Scripts\Facebox\facebox.css" />
+    <Content Include="Scripts\Facebox\facebox.js" />
+    <Content Include="Scripts\Facebox\FaceboxScript.js" />
+    <Content Include="Scripts\Facebox\loading.gif" />
     <Content Include="Scripts\jquery-1.7.1.js" />
     <Content Include="Scripts\jquery-1.7.1.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -202,7 +207,7 @@
     <Content Include="Views\Row\List.cshtml" />
     <Content Include="Views\Shared\RowSummary.cshtml" />
     <Content Include="Views\Row\NewRow.cshtml" />
-    <Content Include="Views\Row\EditRow.cshtml" />
+    <Content Include="Views\Row\EditRow2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

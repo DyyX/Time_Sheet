@@ -1,7 +1,7 @@
 ﻿@model PersonalTimeSheet.DBUtils.Row
 
 @{
-    Layout = null;
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @using (Html.BeginForm())
@@ -14,7 +14,13 @@
     <br/>
     <div>Spent Time : @Html.EditorFor(x => x.SpentTime)</div>
 
-    <p align="center">
+    <p align="left">
         <input class="actionButtons" type="submit" value="Save" />
     </p>
+}
+
+ @using (Html.BeginForm("List", "Row"))
+{
+    @Html.Hidden("page", Session["curPage"])
+    <input class="actionButtons" type="submit" value="Back" />
 }
